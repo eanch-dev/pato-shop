@@ -521,6 +521,194 @@
       flex: 0 0 21px;
     }
 
+
+
+    /* Formulario de pedido en una sola ventana */
+    .checkout-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(20, 24, 19, .66);
+      backdrop-filter: blur(5px);
+    }
+
+    .checkout-overlay.open { display: flex; }
+
+    .checkout-modal {
+      position: relative;
+      width: min(100%, 620px);
+      max-height: min(92dvh, 900px);
+      overflow-y: auto;
+      padding: clamp(22px, 4vw, 34px);
+      border: 1px solid rgba(184, 154, 96, .38);
+      border-radius: 22px;
+      background: var(--white);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, .3);
+      animation: checkout-enter .22s ease-out;
+    }
+
+    @keyframes checkout-enter {
+      from { opacity: 0; transform: translateY(12px) scale(.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    body.checkout-open { overflow: hidden; }
+
+    .checkout-modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .checkout-kicker {
+      margin: 0 0 7px;
+      color: #917441;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .checkout-modal h2 {
+      margin: 0;
+      font-size: clamp(27px, 4vw, 34px);
+      line-height: 1.18;
+    }
+
+    .checkout-subtitle {
+      margin: 9px 0 0;
+      max-width: 420px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .checkout-close {
+      display: grid;
+      place-items: center;
+      flex: 0 0 40px;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: white;
+      color: var(--dark);
+      font-size: 25px;
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .checkout-close:hover { background: var(--cream); transform: rotate(90deg); }
+
+    .checkout-summary {
+      margin-bottom: 22px;
+      padding: 16px 17px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #f9f7f1;
+    }
+
+    .checkout-summary-head,
+    .checkout-summary-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .checkout-summary-head { margin-bottom: 10px; font-weight: 700; font-size: 13px; }
+    .checkout-summary-items { display: grid; gap: 8px; }
+    .checkout-summary-item { display: flex; justify-content: space-between; gap: 14px; color: #5c5c54; font-size: 12px; line-height: 1.5; }
+    .checkout-summary-item span:first-child { min-width: 0; }
+    .checkout-summary-total { margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--border); font-weight: 700; }
+    .checkout-summary-total strong { font-size: 18px; }
+    .checkout-shipping-note { margin: 8px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+    .checkout-form { display: grid; gap: 17px; }
+    .checkout-field { display: grid; gap: 7px; min-width: 0; }
+    .checkout-field label, .checkout-delivery legend { color: var(--dark); font-size: 12px; font-weight: 700; }
+    .checkout-field input,
+    .checkout-field select,
+    .checkout-field textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 12px 13px;
+      border: 1px solid #dcd8ce;
+      border-radius: 10px;
+      outline: none;
+      background: #fff;
+      color: var(--dark);
+      font: inherit;
+      font-size: 13px;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .checkout-field textarea { min-height: 84px; resize: vertical; }
+    .checkout-field input:focus,
+    .checkout-field select:focus,
+    .checkout-field textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184, 154, 96, .16); }
+
+    .checkout-help { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .checkout-delivery { display: grid; gap: 10px; margin: 0; padding: 0; border: 0; }
+    .checkout-delivery legend { margin-bottom: 10px; }
+    .delivery-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      transition: border-color .18s ease, background .18s ease;
+    }
+    .delivery-option:has(input:checked) { border-color: var(--green); background: #f1f6f0; }
+    .delivery-option input { accent-color: var(--green); margin-top: 3px; }
+    .delivery-option-copy { display: grid; gap: 4px; }
+    .delivery-option-copy strong { font-size: 12px; }
+    .delivery-option-copy small { color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+    .checkout-location-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .checkout-submit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 52px;
+      margin-top: 3px;
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: #25d366;
+      color: #10351e;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 8px 20px rgba(37, 211, 102, .18);
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .checkout-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(37, 211, 102, .26); background: #35dc73; }
+    .checkout-privacy { margin: -6px 0 0; text-align: center; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .checkout-form-error { display: none; margin: 0; padding: 11px 13px; border-radius: 9px; background: #fff0ed; color: #8e3326; font-size: 12px; line-height: 1.5; }
+    .checkout-form-error.show { display: block; }
+
+    @media (max-width: 560px) {
+      .checkout-overlay { padding: 9px; align-items: flex-end; }
+      .checkout-modal { width: 100%; max-height: 94dvh; padding: 22px 17px calc(20px + env(safe-area-inset-bottom)); border-radius: 22px 22px 13px 13px; }
+      .checkout-modal-header { margin-bottom: 19px; gap: 10px; }
+      .checkout-summary { padding: 13px; }
+      .checkout-location-fields { grid-template-columns: 1fr; gap: 15px; }
+      .checkout-form { gap: 15px; }
+    }
+
+
     @media (max-width: 560px) {
       .whatsapp-float {
         right: 14px;
@@ -553,6 +741,452 @@
       .add-button { width: 100%; }
       .cart-panel { padding: 20px; }
     }
+
+
+    /* Animaciones sutiles para una experiencia más elegante */
+    @keyframes toast-in {
+      from { opacity: 0; transform: translate3d(0, 18px, 0) scale(.97); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @keyframes toast-out {
+      to { opacity: 0; transform: translate3d(0, 12px, 0) scale(.98); }
+    }
+    @keyframes cart-pop {
+      0%, 100% { transform: scale(1); }
+      35% { transform: scale(1.16); }
+      65% { transform: scale(.94); }
+    }
+    @keyframes text-rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .toast-confirmation {
+      position: fixed;
+      z-index: 2000;
+      left: 50%;
+      bottom: 26px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: max-content;
+      max-width: calc(100vw - 28px);
+      padding: 14px 18px;
+      color: #fffefa;
+      background: #20251f;
+      border: 1px solid rgba(184,154,96,.7);
+      border-radius: 12px;
+      box-shadow: 0 14px 38px rgba(0,0,0,.22);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .toast-confirmation.show { animation: toast-in .32s cubic-bezier(.2,.8,.2,1) forwards; }
+    .toast-confirmation.hide { animation: toast-out .24s ease forwards; }
+    .toast-check {
+      display: grid;
+      place-items: center;
+      flex: 0 0 30px;
+      width: 30px;
+      height: 30px;
+      color: #20251f;
+      background: #c8ad76;
+      border-radius: 50%;
+      font-weight: 800;
+    }
+    .toast-copy { display: grid; gap: 3px; }
+    .toast-copy strong { font-size: 13px; letter-spacing: .2px; }
+    .toast-copy span { color: #e1ded5; font-size: 12px; }
+
+    button {
+      transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease,
+        color .22s ease, border-color .22s ease, opacity .22s ease;
+    }
+    button:not(:disabled):hover { transform: translateY(-2px); }
+    button:not(:disabled):active { transform: translateY(0) scale(.97); }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+    .add-button:not(:disabled):hover, .checkout:hover, .dark-button:hover, .cart-button:hover {
+      box-shadow: 0 8px 18px rgba(25,25,20,.16);
+    }
+    .product {
+      animation: text-rise .55s both;
+    }
+    .product-image, .hero-art img, .product-thumbnail img {
+      transition: transform .45s cubic-bezier(.2,.7,.2,1), filter .35s ease;
+    }
+    .product-gallery:hover .product-image { transform: scale(1.035); }
+    .hero-art:hover img { transform: scale(1.025); }
+    .logo { transition: letter-spacing .25s ease, color .25s ease; }
+    .logo:hover { letter-spacing: -.4px; }
+    h1, h2, .section-heading, .eyebrow { animation: text-rise .65s both; }
+    #cart-count.bump { display: inline-block; animation: cart-pop .38s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+
+
+    /* Rediseño visual: tienda moderna, cálida y adaptable */
+    :root {
+      --dark: #17251f;
+      --cream: #f4f1e9;
+      --gold: #c59b58;
+      --muted: #747a73;
+      --white: #fffefa;
+      --border: #e7e4dc;
+      --green: #286548;
+      --page: #faf9f5;
+      --soft-green: #eaf1eb;
+    }
+
+    body {
+      background: var(--page);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .announcement {
+      background: linear-gradient(90deg, #17251f, #294737, #17251f);
+      padding: 9px 14px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      min-height: 82px;
+      padding: 14px max(5%, calc((100% - 1380px) / 2));
+      background: rgba(255, 254, 250, .94);
+      border-bottom: 1px solid rgba(231, 228, 220, .9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .brand-wrap { flex: 0 0 auto; }
+    .logo {
+      font-size: 30px;
+      color: var(--dark);
+      line-height: 1.05;
+    }
+    .logo span { color: var(--gold); }
+    .brand-tagline {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 1.75px;
+    }
+
+    .header-actions { gap: 10px; }
+    .search {
+      width: 265px;
+      padding: 12px 15px;
+      border-radius: 999px;
+      border-color: #e5e2d9;
+      background: #f8f7f2;
+      transition: background .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .search:focus { background: white; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(197,155,88,.12); }
+    .cart-button, .dark-button {
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 13px 20px;
+    }
+    .cart-button { white-space: nowrap; }
+    .cart-button:hover, .dark-button:hover { color: white; background: #355b47; border-color: #355b47; }
+
+    .hero {
+      width: min(1380px, calc(100% - 64px));
+      margin: 28px auto 0;
+      padding: clamp(36px, 5vw, 76px) clamp(28px, 6vw, 86px);
+      gap: clamp(28px, 5vw, 72px);
+      border: 1px solid #e9e2d4;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 8% 10%, rgba(255,255,255,.95), transparent 38%),
+        linear-gradient(120deg, #f5f1e8 0%, #f0ebdf 58%, #e7dfcf 100%);
+      box-shadow: 0 18px 55px rgba(45, 42, 30, .06);
+      overflow: hidden;
+    }
+    .hero > div:first-child { max-width: 560px; }
+    .eyebrow {
+      color: #8f6c35;
+      font-size: 10px;
+      letter-spacing: 2.4px;
+    }
+    h1 {
+      font-size: clamp(42px, 5.2vw, 70px);
+      line-height: 1.06;
+      letter-spacing: -1.9px;
+      margin: 20px 0 18px;
+    }
+    .hero p {
+      max-width: 420px;
+      color: #666b63;
+      line-height: 1.85;
+      font-size: 14px;
+      margin-bottom: 26px;
+    }
+    .dark-button { padding: 15px 23px; box-shadow: 0 8px 20px rgba(23,37,31,.13); }
+    .hero-art {
+      position: relative;
+      min-height: 330px;
+      height: 100%;
+      border-radius: 22px;
+      background: #d9cfbd;
+      box-shadow: 0 20px 45px rgba(30, 34, 26, .15);
+      isolation: isolate;
+    }
+    .hero-art::after {
+      content: "ESTILO QUE TE ACOMPAÑA";
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      z-index: 1;
+      padding: 10px 14px;
+      color: white;
+      background: rgba(23,37,31,.85);
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      backdrop-filter: blur(8px);
+    }
+    .hero-art img { height: 100%; min-height: 330px; border-radius: 22px; }
+
+    .shop-highlights {
+      width: min(1260px, calc(100% - 72px));
+      margin: 0 auto;
+      padding: 25px 12px 8px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .highlight-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+      padding: 15px 17px;
+      border: 1px solid #ece9e1;
+      background: rgba(255,254,250,.8);
+      border-radius: 15px;
+    }
+    .highlight-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 39px;
+      height: 39px;
+      width: 39px;
+      color: #355b47;
+      background: var(--soft-green);
+      border-radius: 12px;
+      font-size: 20px;
+    }
+    .highlight-item div { min-width: 0; }
+    .highlight-item strong { display: block; font-size: 12px; color: var(--dark); }
+    .highlight-item div span { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+
+    .section {
+      width: min(1380px, 100%);
+      margin: 0 auto;
+      padding: 72px 32px 82px;
+    }
+    .section-heading { margin-bottom: 24px; align-items: end; }
+    h2 { font-size: clamp(31px, 3vw, 39px); letter-spacing: -.8px; }
+    #results-label {
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: white;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .categories { gap: 9px; margin-bottom: 30px; }
+    .category {
+      padding: 10px 18px;
+      background: transparent;
+      border-color: #dfded5;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .category.active, .category:hover {
+      background: var(--dark);
+      border-color: var(--dark);
+      color: white;
+    }
+
+    .products { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 23px; align-items: stretch; }
+    .product {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 11px;
+      overflow: hidden;
+      border: 1px solid #ebe8e0;
+      border-radius: 19px;
+      background: #fffefa;
+      box-shadow: 0 4px 16px rgba(39, 41, 32, .025);
+      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+      border-color: #d7c8a9;
+      box-shadow: 0 15px 34px rgba(39,41,32,.09);
+    }
+    .product-gallery { overflow: hidden; border-radius: 13px; }
+    .product-image {
+      aspect-ratio: 4 / 4.4;
+      border-radius: 13px;
+      background: linear-gradient(145deg, #f4f2eb, #ece9df);
+    }
+    .product-gallery:hover .product-image { transform: scale(1.045); }
+    .product-thumbnails { margin: 9px 1px 0; gap: 7px; }
+    .product-thumbnail {
+      flex: 0 0 48px;
+      width: 48px;
+      height: 52px;
+      border-radius: 9px;
+      overflow: hidden;
+      border-color: #e6e3da;
+    }
+    .product-thumbnail.active { border: 2px solid var(--gold); box-shadow: 0 0 0 2px rgba(197,155,88,.12); }
+    .product-thumbnail img { border-radius: 6px; }
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 15px 4px 5px;
+    }
+    .product-category { color: #718074; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; }
+    .product h3 {
+      min-height: 48px;
+      margin: 8px 0 7px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 700;
+      letter-spacing: -.15px;
+    }
+    .variant-select {
+      border-radius: 10px;
+      padding: 11px 10px;
+      background: #faf9f5;
+      border-color: #e6e3da;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .stock-label { font-size: 10px; color: #7d8179; }
+    .product-bottom {
+      align-items: center;
+      margin-top: auto;
+      padding-top: 14px;
+      gap: 8px;
+    }
+    .price { font-size: 17px; letter-spacing: -.3px; color: var(--dark); white-space: nowrap; }
+    .add-button {
+      flex: 0 0 auto;
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: var(--dark);
+      border-color: var(--dark);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .add-button:hover { color: white; background: #355b47; border-color: #355b47; }
+    .add-button:disabled { background: #efeee8; border-color: #e1dfd6; color: #8d9088; box-shadow: none; }
+    .empty { padding: 55px 20px; border: 1px dashed #dcd8ca; border-radius: 18px; background: #fffefa; }
+
+    .cart-panel {
+      z-index: 110;
+      border-left: 1px solid var(--border);
+      box-shadow: -20px 0 65px rgba(0,0,0,.16);
+    }
+    .cart-header h2 { font-size: 27px; }
+    .cart-item { padding: 19px 0; }
+    .quantity button { border-radius: 8px; min-width: 30px; }
+    .checkout { border-radius: 999px; font-weight: 700; padding: 16px; }
+    .checkout:hover { background: #1e5439; }
+    .image-zoom-picture { border-radius: 12px; box-shadow: 0 12px 55px rgba(0,0,0,.28); }
+    .image-zoom-close { border-radius: 50%; transition: background .2s ease, transform .2s ease; }
+    .image-zoom-close:hover { background: #355b47; }
+    .toast-confirmation { bottom: 30px; border-radius: 16px; }
+    .whatsapp-float {
+      bottom: 22px;
+      right: 22px;
+      padding: 13px 18px;
+      border: 2px solid rgba(255,255,255,.8);
+      background: #20bd5a;
+      box-shadow: 0 10px 28px rgba(19, 91, 47, .22);
+    }
+    .whatsapp-float:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(19,91,47,.28); }
+
+    footer {
+      margin-top: 10px;
+      padding: 48px 22px;
+      background: linear-gradient(130deg, #17251f, #253d30);
+    }
+    footer .logo { color: #fffefa; }
+    footer p { color: #d0d4cd; }
+    .footer-contact { gap: 10px; }
+    .footer-contact strong { font-size: 13px; }
+    .footer-contact a { text-decoration: none; color: #f2d7a5; }
+    .footer-contact a:hover { text-decoration: underline; }
+
+    @media (min-width: 1500px) {
+      .products { gap: 26px; }
+    }
+    @media (max-width: 1100px) {
+      .products { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px; }
+      .hero { width: calc(100% - 44px); }
+      .section { padding-left: 22px; padding-right: 22px; }
+      .shop-highlights { width: calc(100% - 50px); }
+    }
+    @media (max-width: 760px) {
+      header { position: relative; padding: 15px 5%; }
+      .hero { width: calc(100% - 28px); margin-top: 14px; padding: 34px 25px 25px; grid-template-columns: 1fr; border-radius: 22px; gap: 26px; }
+      .hero-art, .hero-art img { min-height: 250px; height: 250px; }
+      .hero-art::after { bottom: 12px; left: 12px; }
+      .shop-highlights { grid-template-columns: 1fr; width: calc(100% - 36px); gap: 9px; padding-top: 16px; }
+      .highlight-item { padding: 12px 14px; }
+      .section { padding: 50px 14px 62px; }
+      .section-heading { gap: 12px; }
+      .products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .product { padding: 8px; border-radius: 15px; }
+      .product-gallery, .product-image { border-radius: 10px; }
+      .product h3 { font-size: 13px; min-height: 55px; }
+      .product-info { padding: 13px 2px 4px; }
+      .price { font-size: 15px; }
+      .add-button { padding: 9px 10px; font-size: 10px; }
+      .variant-select { padding: 10px 7px; font-size: 10px; }
+      .product-bottom { align-items: flex-start; flex-direction: column; }
+      .add-button { width: 100%; }
+      .product-thumbnails { gap: 5px; }
+      .product-thumbnail { flex-basis: 42px; width: 42px; height: 46px; }
+      .whatsapp-float { right: 12px; bottom: 12px; padding: 11px 13px; }
+      .toast-confirmation { bottom: 76px; }
+    }
+    @media (max-width: 390px) {
+      .brand-tagline { font-size: 7px; letter-spacing: 1.3px; }
+      .hero { padding: 30px 19px 20px; }
+      h1 { font-size: 39px; }
+      .products { gap: 9px; }
+      .product h3 { font-size: 12px; }
+      .price { font-size: 14px; }
+      .search { padding: 11px 12px; }
+      .cart-button { padding: 11px 13px; }
+    }
+
   </style>
 </head>
 
@@ -562,7 +1196,10 @@
   </div>
 
   <header>
-    <div class="logo">Pato<span>.</span>Shop</div>
+    <div class="brand-wrap">
+      <div class="logo">Pato<span>.</span>Shop</div>
+      <div class="brand-tagline">MODA · CALZADO · ACCESORIOS</div>
+    </div>
     <div class="header-actions">
       <input
         id="search"
@@ -598,13 +1235,28 @@
       </div>
     </section>
 
+    <section class="shop-highlights" aria-label="Información de la tienda">
+      <div class="highlight-item">
+        <span class="highlight-icon" aria-hidden="true">✦</span>
+        <div><strong>Selección con estilo</strong><span>Prendas y calzado para tu día a día</span></div>
+      </div>
+      <div class="highlight-item">
+        <span class="highlight-icon" aria-hidden="true">♡</span>
+        <div><strong>Atención personalizada</strong><span>Resolvemos tus dudas por WhatsApp</span></div>
+      </div>
+      <div class="highlight-item">
+        <span class="highlight-icon" aria-hidden="true">↗</span>
+        <div><strong>Entrega coordinada</strong><span>Consulta las opciones disponibles en Ecuador</span></div>
+      </div>
+    </section>
+
     <section class="section" id="collection">
       <div class="section-heading">
         <div>
           <div class="eyebrow">Nuestra colección</div>
           <h2>Estilo para cada día</h2>
         </div>
-        <span id="results-label">18 productos</span>
+        <span id="results-label">20 productos</span>
       </div>
 
       <div class="categories" id="categories" aria-label="Filtrar por categoría">
@@ -641,6 +1293,11 @@
     WhatsApp
   </a>
 
+  <div class="toast-confirmation" id="cart-toast" role="status" aria-live="polite" aria-atomic="true">
+    <span class="toast-check" aria-hidden="true">✓</span>
+    <span class="toast-copy"><strong>¡Añadido a tu bolsa!</strong><span id="cart-toast-product">El producto se agregó correctamente.</span></span>
+  </div>
+
   <aside class="cart-panel" id="cart-panel" aria-label="Carrito de compras" aria-hidden="true">
     <div class="cart-header">
       <h2>Tu bolsa</h2>
@@ -656,6 +1313,78 @@
     </p>
     <button class="checkout" id="checkout" type="button">Pedir por WhatsApp</button>
   </aside>
+
+
+
+  <!-- Formulario simplificado: un solo paso antes de abrir WhatsApp -->
+  <div class="checkout-overlay" id="checkout-overlay" aria-hidden="true">
+    <section class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+      <div class="checkout-modal-header">
+        <div>
+          <p class="checkout-kicker">Pato Shop · Tu pedido</p>
+          <h2 id="checkout-title">Coordina tu entrega</h2>
+          <p class="checkout-subtitle">Completa estos datos una sola vez. Después podrás revisar y enviar el pedido por WhatsApp.</p>
+        </div>
+        <button class="checkout-close" id="checkout-close" type="button" aria-label="Cerrar formulario">×</button>
+      </div>
+
+      <div class="checkout-summary" aria-live="polite">
+        <div class="checkout-summary-head">
+          <span>Resumen de tu bolsa</span>
+          <span id="checkout-item-count">0 artículos</span>
+        </div>
+        <div class="checkout-summary-items" id="checkout-summary-items"></div>
+        <div class="checkout-summary-total">
+          <span>Subtotal de productos</span>
+          <strong id="checkout-summary-total">$0.00</strong>
+        </div>
+        <p class="checkout-shipping-note">El envío no está incluido. Confirmaremos cobertura y costo por WhatsApp antes de finalizar la compra.</p>
+      </div>
+
+      <form class="checkout-form" id="checkout-form">
+        <div class="checkout-location-fields">
+          <div class="checkout-field">
+            <label for="checkout-province">Provincia *</label>
+            <select id="checkout-province" name="province" required>
+              <option value="" selected disabled>Elige una provincia</option>
+              <option>Azuay</option><option>Bolívar</option><option>Cañar</option><option>Carchi</option>
+              <option>Chimborazo</option><option>Cotopaxi</option><option>El Oro</option><option>Esmeraldas</option>
+              <option>Galápagos</option><option>Guayas</option><option>Imbabura</option><option>Loja</option>
+              <option>Los Ríos</option><option>Manabí</option><option>Morona Santiago</option><option>Napo</option>
+              <option>Orellana</option><option>Pastaza</option><option>Pichincha</option><option>Santa Elena</option>
+              <option>Santo Domingo de los Tsáchilas</option><option>Sucumbíos</option><option>Tungurahua</option>
+              <option>Zamora Chinchipe</option>
+            </select>
+          </div>
+          <div class="checkout-field">
+            <label for="checkout-city">Ciudad o cantón *</label>
+            <input id="checkout-city" name="city" type="text" placeholder="Ej. Puyo" maxlength="80" autocomplete="address-level2" required>
+          </div>
+        </div>
+
+        <fieldset class="checkout-delivery" id="checkout-delivery-fieldset">
+          <legend>¿Cómo prefieres recibirlo? *</legend>
+          <div id="checkout-delivery-options">
+            <p class="checkout-help">Primero selecciona la provincia para mostrar las opciones de entrega.</p>
+          </div>
+        </fieldset>
+
+        <div class="checkout-field" id="checkout-address-field" hidden>
+          <label for="checkout-address" id="checkout-address-label">Dirección de entrega *</label>
+          <textarea id="checkout-address" name="address" maxlength="300" placeholder="Calle principal, número, sector y una referencia"></textarea>
+          <p class="checkout-help" id="checkout-address-help">Incluye una referencia para facilitar la entrega.</p>
+        </div>
+
+        <p class="checkout-form-error" id="checkout-form-error" role="alert"></p>
+        <button class="checkout-submit" type="submit">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.78 11.78 0 0 0 12.13 0C5.56 0 .21 5.35.21 11.92c0 2.1.55 4.15 1.59 5.95L.1 24l6.28-1.65a11.9 11.9 0 0 0 5.74 1.46h.01c6.57 0 11.92-5.35 11.92-11.92a11.84 11.84 0 0 0-3.53-8.41ZM12.13 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98 1-3.64-.24-.37a9.86 9.86 0 0 1-1.52-5.26c0-5.46 4.44-9.9 9.91-9.9a9.84 9.84 0 0 1 7.01 2.91 9.84 9.84 0 0 1 2.9 7.02c0 5.46-4.45 9.9-9.92 9.9Zm5.43-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.8-1.49-1.78-1.66-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.08 4.5.71.31 1.26.5 1.69.64.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/></svg>
+          Continuar por WhatsApp
+        </button>
+        <p class="checkout-privacy">No se procesará ningún pago en esta página. El pedido se coordina directamente contigo.</p>
+      </form>
+    </section>
+  </div>
+
 
   <!-- Visor de zoom: se abre al hacer clic en la imagen principal del producto -->
   <div class="image-zoom" id="image-zoom" role="dialog" aria-modal="true" aria-label="Imagen ampliada del producto" aria-hidden="true">
@@ -975,39 +1704,39 @@
       ]
       },
       {
-      id: 19,
-      name: "Nike Revolution 7",
-      category: "Calzado",
-      price: 70.00,
-      demo: false,
-      image: "imagenes/cal-005-lateral.jpeg",
-      images: [
-        "imagenes/cal-005-lateral.jpeg",
-        "imagenes/cal-005-lateral2.jpeg",
-        "imagenes/cal-005-suela.jpeg",
-      ],
-      color: "Gris",
-      variants: [
-        { label: "Talla 40.5 - Nike Revolution 7", stock: 1 },
-        { label: "Talla 41 - Nike Revolution 7", stock: 1 }
-      ]
+        id: 19,
+        name: "Nike Revolution 7",
+        category: "Calzado",
+        price: 70.00,
+        demo: false,
+        image: "imagenes/cal-005-lateral.jpeg",
+        images: [
+          "imagenes/cal-005-lateral.jpeg",
+          "imagenes/cal-005-lateral2.jpeg",
+          "imagenes/cal-005-suela.jpeg"
+        ],
+        color: "Gris",
+        variants: [
+          { label: "Talla 40.5 - Nike Revolution 7", stock: 1 },
+          { label: "Talla 41 - Nike Revolution 7", stock: 1 }
+        ]
       },
       {
-      id: 20,
-      name: "Nike Air Force 1 '07 Next Nature",
-      category: "Calzado",
-      price: 60.00,
-      demo: false,
-      image: "imagenes/cal-006-lateral.jpeg",
-      images: [
-        "imagenes/cal-006-lateral.jpeg",
-        "imagenes/cal-006-lateral2.jpeg",
-        "imagenes/cal-006-suela.jpeg",
-      ],
-      color: "Gris",
-      variants: [
-        { label: "Talla 33.5 - Nike Air Force 1 '07 Next Nature", stock: 1 }
-      ]
+        id: 20,
+        name: "Nike Air Force 1 '07 Next Nature",
+        category: "Calzado",
+        price: 60.00,
+        demo: false,
+        image: "imagenes/cal-006-lateral.jpeg",
+        images: [
+          "imagenes/cal-006-lateral.jpeg",
+          "imagenes/cal-006-lateral2.jpeg",
+          "imagenes/cal-006-suela.jpeg"
+        ],
+        color: "Gris",
+        variants: [
+          { label: "Talla 33.5 - Nike Air Force 1 '07 Next Nature", stock: 1 }
+        ]
       }
     ];
 
@@ -1081,6 +1810,30 @@
         : '<p class="empty">No encontramos productos con esa búsqueda. Prueba otra palabra o categoría.</p>';
     }
 
+    let toastTimeout;
+    let toastHideTimeout;
+
+    function showCartConfirmation(productName) {
+      const toast = document.getElementById("cart-toast");
+      const message = document.getElementById("cart-toast-product");
+      const count = document.getElementById("cart-count");
+      message.textContent = productName + " se agregó correctamente.";
+      toast.classList.remove("show", "hide");
+      // Reinicia la animación si se agregan varios productos seguidos.
+      void toast.offsetWidth;
+      toast.classList.add("show");
+      count.classList.remove("bump");
+      void count.offsetWidth;
+      count.classList.add("bump");
+      clearTimeout(toastTimeout);
+      clearTimeout(toastHideTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+        toast.classList.add("hide");
+        toastHideTimeout = setTimeout(() => toast.classList.remove("hide"), 250);
+      }, 2600);
+    }
+
     function addToCart(id) {
       const product = products.find(item => item.id === id);
       if (!product) return;
@@ -1102,6 +1855,7 @@
         cart.push({ ...product, variantLabel, quantity: 1 });
       }
       renderCart();
+      showCartConfirmation(product.name);
     }
 
     function changeQuantity(id, variantLabel, amount) {
@@ -1257,98 +2011,174 @@
       document.getElementById("collection").scrollIntoView({ behavior: "smooth" });
     });
 
-    document.getElementById("checkout").addEventListener("click", () => {
+    const checkoutOverlay = document.getElementById("checkout-overlay");
+    const checkoutForm = document.getElementById("checkout-form");
+    const checkoutProvince = document.getElementById("checkout-province");
+    const checkoutDeliveryOptions = document.getElementById("checkout-delivery-options");
+    const checkoutAddressField = document.getElementById("checkout-address-field");
+    const checkoutAddress = document.getElementById("checkout-address");
+    const checkoutAddressLabel = document.getElementById("checkout-address-label");
+    const checkoutAddressHelp = document.getElementById("checkout-address-help");
+    const checkoutError = document.getElementById("checkout-form-error");
+
+    function renderCheckoutSummary() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      document.getElementById("checkout-item-count").textContent =
+        count + (count === 1 ? " artículo" : " artículos");
+      document.getElementById("checkout-summary-total").textContent = money(total);
+      document.getElementById("checkout-summary-items").innerHTML = cart.map(item => `
+        <div class="checkout-summary-item">
+          <span>${item.name} · ${item.variantLabel} × ${item.quantity}</span>
+          <strong>${money(item.price * item.quantity)}</strong>
+        </div>
+      `).join("");
+    }
+
+    function updateCheckoutDeliveryOptions() {
+      const province = checkoutProvince.value;
+      // Al cambiar de provincia, evita reutilizar una dirección de otro destino.
+      checkoutAddress.value = "";
+      checkoutError.classList.remove("show");
+      checkoutError.textContent = "";
+
+      if (!province) {
+        checkoutDeliveryOptions.innerHTML = '<p class="checkout-help">Primero selecciona la provincia para mostrar las opciones de entrega.</p>';
+        checkoutAddressField.hidden = true;
+        checkoutAddress.required = false;
+        return;
+      }
+
+      if (province === "Pastaza") {
+        checkoutDeliveryOptions.innerHTML = `
+          <label class="delivery-option">
+            <input type="radio" name="delivery" value="personal" required>
+            <span class="delivery-option-copy">
+              <strong>Entrega personal coordinada</strong>
+              <small>Acordamos por WhatsApp el lugar y el horario en Pastaza.</small>
+            </span>
+          </label>
+          <label class="delivery-option">
+            <input type="radio" name="delivery" value="courier" required>
+            <span class="delivery-option-copy">
+              <strong>Servicio de entrega / courier</strong>
+              <small>Confirmaremos cobertura y costo antes de finalizar el pedido.</small>
+            </span>
+          </label>`;
+      } else {
+        checkoutDeliveryOptions.innerHTML = `
+          <label class="delivery-option">
+            <input type="radio" name="delivery" value="courier" checked required>
+            <span class="delivery-option-copy">
+              <strong>Servicio de entrega / courier</strong>
+              <small>Confirmaremos la cobertura y el costo para ${province} por WhatsApp.</small>
+            </span>
+          </label>`;
+      }
+
+      updateCheckoutAddressField();
+    }
+
+    function updateCheckoutAddressField() {
+      const chosen = checkoutForm.querySelector('input[name="delivery"]:checked');
+      const method = chosen?.value || "";
+      checkoutAddressField.hidden = !method;
+      checkoutAddress.required = Boolean(method);
+
+      if (method === "personal") {
+        checkoutAddressLabel.textContent = "Lugar o referencia para coordinar la entrega *";
+        checkoutAddress.placeholder = "Ej. sector, lugar de encuentro o referencia";
+        checkoutAddressHelp.textContent = "No necesitas escribir una dirección completa; indica una referencia para coordinar el encuentro.";
+      } else if (method === "courier") {
+        checkoutAddressLabel.textContent = "Dirección de entrega *";
+        checkoutAddress.placeholder = "Calle principal, número, sector y una referencia";
+        checkoutAddressHelp.textContent = "Incluye una referencia para facilitar la entrega. La cobertura y el costo se confirmarán por WhatsApp.";
+      }
+    }
+
+    function openCheckout() {
       if (!cart.length) {
         alert("Añade al menos un producto antes de hacer tu pedido.");
         return;
       }
-
-      // Evita enviar pedidos con productos que solo son ejemplos.
       if (cart.some(item => item.demo)) {
-        alert(
-          "Este catálogo todavía contiene productos de demostración. " +
-          "Cuando agreguemos tus productos reales, podrás preparar pedidos."
-        );
+        alert("Este catálogo todavía contiene productos de demostración. Cuando agreguemos tus productos reales, podrás preparar pedidos.");
         return;
       }
-
       if (!/^\d{10,15}$/.test(WHATSAPP_NUMBER) || WHATSAPP_NUMBER.includes("X")) {
         alert("Configura tu número real de WhatsApp en el código antes de habilitar pedidos.");
         return;
       }
 
-      const country = prompt(
-        "Pato Shop realiza entregas únicamente dentro de Ecuador.\n" +
-        "Escribe tu país (Ecuador):"
-      );
+      renderCheckoutSummary();
+      checkoutError.classList.remove("show");
+      checkoutError.textContent = "";
+      checkoutOverlay.classList.add("open");
+      checkoutOverlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("checkout-open");
+      document.getElementById("checkout-close").focus();
+    }
 
-      if (!country || country.trim().toLocaleLowerCase("es") !== "ecuador") {
-        alert("Por ahora, Pato Shop solo acepta pedidos con entrega dentro de Ecuador.");
+    function closeCheckout() {
+      checkoutOverlay.classList.remove("open");
+      checkoutOverlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("checkout-open");
+    }
+
+    document.getElementById("checkout").addEventListener("click", openCheckout);
+    document.getElementById("checkout-close").addEventListener("click", closeCheckout);
+    checkoutOverlay.addEventListener("click", event => {
+      if (event.target === checkoutOverlay) closeCheckout();
+    });
+    checkoutProvince.addEventListener("change", updateCheckoutDeliveryOptions);
+    checkoutDeliveryOptions.addEventListener("change", event => {
+      if (event.target.matches('input[name="delivery"]')) updateCheckoutAddressField();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && checkoutOverlay.classList.contains("open")) closeCheckout();
+    });
+
+    checkoutForm.addEventListener("submit", event => {
+      event.preventDefault();
+      checkoutError.classList.remove("show");
+      checkoutError.textContent = "";
+
+      if (!checkoutForm.reportValidity()) return;
+      const province = checkoutProvince.value;
+      const city = document.getElementById("checkout-city").value.trim();
+      const method = checkoutForm.querySelector('input[name="delivery"]:checked')?.value;
+      const address = checkoutAddress.value.trim();
+
+      if (!province || !city || !method || !address) {
+        checkoutError.textContent = "Revisa los campos marcados. Necesitamos la provincia, ciudad o cantón, modalidad de entrega y el lugar o dirección.";
+        checkoutError.classList.add("show");
         return;
-      }
-
-      const provinces = [
-        "Azuay", "Bolívar", "Cañar", "Carchi", "Chimborazo", "Cotopaxi",
-        "El Oro", "Esmeraldas", "Galápagos", "Guayas", "Imbabura", "Loja",
-        "Los Ríos", "Manabí", "Morona Santiago", "Napo", "Orellana", "Pastaza",
-        "Pichincha", "Santa Elena", "Santo Domingo de los Tsáchilas", "Sucumbíos",
-        "Tungurahua", "Zamora Chinchipe"
-      ];
-      const provinceInput = prompt(
-        "Escribe la provincia donde recibirás el pedido:\n\n" + provinces.join(", ")
-      );
-      if (!provinceInput) {
-        alert("No se envió el pedido. Debes indicar una provincia de Ecuador.");
-        return;
-      }
-
-      const province = provinces.find(
-        name => name.toLocaleLowerCase("es") === provinceInput.trim().toLocaleLowerCase("es")
-      );
-      if (!province) {
-        alert("No reconocimos esa provincia. Escribe el nombre de una provincia de Ecuador y vuelve a intentarlo.");
-        return;
-      }
-
-      let deliveryText;
-      if (province === "Pastaza") {
-        const delivery = prompt(
-          "Para Pastaza puedes elegir:\n" +
-          "1 = Entrega personal (coordinar lugar y horario)\n" +
-          "2 = Servicio de entrega / courier"
-        );
-        if (delivery !== "1" && delivery !== "2") {
-          alert("No se envió el pedido. Elige 1 para entrega personal o 2 para servicio de entrega.");
-          return;
-        }
-        deliveryText = delivery === "1"
-          ? "Entrega personal en Pastaza (coordinar lugar y horario)"
-          : "Servicio de entrega / courier a Pastaza (confirmar costo)";
-      } else {
-        deliveryText = "Servicio de entrega / courier a " + province + " (confirmar cobertura y costo)";
       }
 
       const lines = cart.map(item =>
         `- ${item.name} (${item.variantLabel}) x${item.quantity}: ${money(item.price * item.quantity)}`
       );
-
       const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const deliveryText = method === "personal"
+        ? "Entrega personal coordinada en Pastaza"
+        : `Servicio de entrega / courier a ${province} (cobertura y costo por confirmar)`;
 
       const message = [
         "Hola, Pato Shop. Quiero realizar este pedido:",
         "",
         ...lines,
         "",
-        `Total estimado de productos: ${money(total)}`,
+        `Subtotal de productos: ${money(total)}`,
         "País: Ecuador",
-        `Provincia de entrega: ${province}`,
+        `Provincia: ${province}`,
+        `Ciudad o cantón: ${city}`,
         `Modalidad de entrega: ${deliveryText}`,
-        "Por favor, confirmen disponibilidad, costo de envío si corresponde y métodos de pago."
+        `${method === "personal" ? "Lugar o referencia para coordinar" : "Dirección de entrega"}: ${address}`,
+        "",
+        "Por favor, confirmen disponibilidad, cobertura y costo de envío si corresponde, y métodos de pago."
       ].join("\n");
 
       const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
-      // Navega en la misma pestaña para evitar que el navegador bloquee
-      // WhatsApp como ventana emergente después de los cuadros prompt().
       window.location.href = url;
     });
 
