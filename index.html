@@ -187,12 +187,41 @@
 
     .product { min-width: 0; }
 
+    .product-gallery { width: 100%; }
+
     .product-image {
       width: 100%;
       aspect-ratio: 4 / 5;
-      object-fit: cover;
+      object-fit: contain;
       background: var(--cream);
       display: block;
+      cursor: zoom-in;
+    }
+
+    .product-thumbnails {
+      display: flex;
+      gap: 8px;
+      margin-top: 9px;
+      overflow-x: auto;
+      padding-bottom: 3px;
+    }
+
+    .product-thumbnail {
+      flex: 0 0 62px;
+      width: 62px;
+      height: 70px;
+      padding: 3px;
+      border: 1px solid var(--border);
+      background: white;
+    }
+
+    .product-thumbnail.active { border: 2px solid var(--gold); }
+
+    .product-thumbnail img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .product-info { padding: 14px 0; }
@@ -269,6 +298,76 @@
       text-align: center;
       line-height: 1.7;
     }
+
+    /* Visor de imágenes ampliadas */
+    .image-zoom {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15, 15, 13, .92);
+    }
+
+    .image-zoom.open { display: flex; }
+
+    .image-zoom-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .image-zoom-picture {
+      max-width: min(92vw, 1100px);
+      max-height: 88vh;
+      object-fit: contain;
+      cursor: zoom-out;
+      transition: transform .2s ease;
+      transform-origin: center center;
+      user-select: none;
+    }
+
+    .image-zoom-picture.zoomed {
+      transform: scale(2);
+      cursor: zoom-out;
+    }
+
+    .image-zoom-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      border: 1px solid #ffffff66;
+      border-radius: 50%;
+      background: #191914cc;
+      color: white;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .image-zoom-hint {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 90%;
+      color: white;
+      font-size: 12px;
+      text-align: center;
+      background: #191914cc;
+      padding: 9px 13px;
+      border-radius: 20px;
+    }
+
+    body.zoom-open { overflow: hidden; }
 
     .cart-panel {
       position: fixed;
@@ -377,6 +476,61 @@
       line-height: 1.8;
     }
 
+    .footer-contact {
+      margin: 18px auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-contact a {
+      color: #fffefa;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 13px;
+    }
+
+    .whatsapp-float {
+      position: fixed;
+      z-index: 20;
+      right: 22px;
+      bottom: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 17px;
+      border-radius: 999px;
+      background: #25d366;
+      color: #102b19;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 5px 20px #0003;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .whatsapp-float:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px #0004;
+    }
+
+    .whatsapp-float svg {
+      width: 21px;
+      height: 21px;
+      flex: 0 0 21px;
+    }
+
+    @media (max-width: 560px) {
+      .whatsapp-float {
+        right: 14px;
+        bottom: 14px;
+        padding: 12px 14px;
+      }
+      .image-zoom { padding: 16px; }
+      .image-zoom-picture.zoomed { transform: scale(1.5); }
+    }
+
     @media (max-width: 900px) {
       .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .hero { gap: 25px; padding: 50px 6%; }
@@ -399,34 +553,6 @@
       .add-button { width: 100%; }
       .cart-panel { padding: 20px; }
     }
-
-    .product-image { cursor: zoom-in; }
-    .product-image:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-    .image-lightbox {
-      position: fixed; inset: 0; z-index: 10000; display: none;
-      align-items: center; justify-content: center; flex-direction: column;
-      gap: 14px; padding: 64px 18px 24px; background: rgba(15, 15, 13, .94);
-    }
-    .image-lightbox.open { display: flex; }
-    .lightbox-image-wrap {
-      width: min(100%, 1100px); height: min(78vh, 900px);
-      overflow: auto; display: flex; align-items: center; justify-content: center;
-    }
-    .lightbox-image {
-      display: block; max-width: 100%; max-height: 100%; object-fit: contain;
-      transform: scale(1); transform-origin: center center;
-      transition: transform .15s ease; cursor: zoom-in;
-    }
-    .lightbox-image.zoomed { cursor: zoom-out; }
-    .lightbox-controls { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
-    .lightbox-controls button, .lightbox-close {
-      border: 1px solid rgba(255,255,255,.65); background: rgba(255,255,255,.12);
-      color: white; padding: 10px 15px; border-radius: 4px; font-size: 16px;
-    }
-    .lightbox-controls button:hover, .lightbox-close:hover { background: rgba(255,255,255,.25); }
-    .lightbox-close { position: absolute; top: 14px; right: 16px; font-size: 25px; padding: 5px 13px; }
-    .lightbox-hint { color: white; opacity: .85; font-size: 13px; text-align: center; margin: 0; }
-
   </style>
 </head>
 
@@ -478,7 +604,7 @@
           <div class="eyebrow">Nuestra colección</div>
           <h2>Estilo para cada día</h2>
         </div>
-        <span id="results-label">6 productos</span>
+        <span id="results-label">18 productos</span>
       </div>
 
       <div class="categories" id="categories" aria-label="Filtrar por categoría">
@@ -498,7 +624,22 @@
       Una selección pensada para ti.<br>
       © <span id="year"></span> Pato Shop. Todos los derechos reservados.
     </p>
+    <div class="footer-contact">
+      <strong>¿Tienes preguntas o quieres hacer un pedido?</strong>
+      <a href="https://wa.me/593984830693?text=Hola%2C%20Pato%20Shop.%20Quiero%20consultar%20por%20un%20producto."
+         target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp: +593 98 483 0693</a>
+    </div>
   </footer>
+
+  <a class="whatsapp-float"
+     href="https://wa.me/593984830693?text=Hola%2C%20Pato%20Shop.%20Quiero%20consultar%20por%20un%20producto."
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Contactar a Pato Shop por WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+      <path d="M20.52 3.48A11.78 11.78 0 0 0 12.13 0C5.56 0 .21 5.35.21 11.92c0 2.1.55 4.15 1.59 5.95L.1 24l6.28-1.65a11.9 11.9 0 0 0 5.74 1.46h.01c6.57 0 11.92-5.35 11.92-11.92a11.84 11.84 0 0 0-3.53-8.41ZM12.13 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98 1-3.64-.24-.37a9.86 9.86 0 0 1-1.52-5.26c0-5.46 4.44-9.9 9.91-9.9a9.84 9.84 0 0 1 7.01 2.91 9.84 9.84 0 0 1 2.9 7.02c0 5.46-4.45 9.9-9.92 9.9Zm5.43-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.8-1.49-1.78-1.66-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.08 4.5.71.31 1.26.5 1.69.64.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/>
+    </svg>
+    WhatsApp
+  </a>
 
   <aside class="cart-panel" id="cart-panel" aria-label="Carrito de compras" aria-hidden="true">
     <div class="cart-header">
@@ -516,18 +657,13 @@
     <button class="checkout" id="checkout" type="button">Pedir por WhatsApp</button>
   </aside>
 
-
-  <div class="image-lightbox" id="image-lightbox" role="dialog" aria-modal="true" aria-label="Vista ampliada del producto">
-    <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Cerrar imagen">&times;</button>
-    <div class="lightbox-image-wrap">
-      <img class="lightbox-image" id="lightbox-image" src="" alt="">
+  <!-- Visor de zoom: se abre al hacer clic en la imagen principal del producto -->
+  <div class="image-zoom" id="image-zoom" role="dialog" aria-modal="true" aria-label="Imagen ampliada del producto" aria-hidden="true">
+    <div class="image-zoom-content">
+      <button class="image-zoom-close" id="image-zoom-close" type="button" aria-label="Cerrar imagen ampliada">×</button>
+      <img class="image-zoom-picture" id="image-zoom-picture" src="" alt="">
+      <div class="image-zoom-hint">Haz clic en la imagen para acercar · Esc para cerrar</div>
     </div>
-    <div class="lightbox-controls">
-      <button id="zoom-out" type="button" aria-label="Alejar">−</button>
-      <button id="zoom-reset" type="button">Restablecer</button>
-      <button id="zoom-in" type="button" aria-label="Acercar">+</button>
-    </div>
-    <p class="lightbox-hint">Usa + y − para hacer zoom. Haz clic en la imagen para acercar o alejar; pulsa Esc para cerrar.</p>
   </div>
 
   <script>
@@ -541,90 +677,309 @@
     const products = [
       {
         id: 1,
-        name: "Camiseta Essential",
-        category: "Ropa",
-        price: 14.90,
-        demo: true,
-        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=80",
+        name: "Reebok NFX Trainer 2",
+        category: "Calzado",
+        price: 80.00,
+        demo: false,
+        image: "imagenes/cal-001-frontal.webp",
+        images: [
+          "imagenes/cal-001-frontal.webp",
+          "imagenes/cal-001-frontalfr.webp",
+          "imagenes/cal-001-lateral.webp",
+          "imagenes/cal-001-suela.webp",
+          "imagenes/cal-001-traserafr.webp"
+        ],
         variants: [
-          { label: "S · Blanco", stock: 3 },
-          { label: "M · Blanco", stock: 5 },
-          { label: "L · Blanco", stock: 2 },
-          { label: "S · Negro", stock: 2 },
-          { label: "M · Negro", stock: 4 }
+          { label: "Talla 39", stock: 1 }
         ]
       },
       {
         id: 2,
-        name: "Sudadera Urban",
-        category: "Ropa",
-        price: 29.90,
-        demo: true,
-        image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=700&q=80",
+        name: "Reebok Classic Nylon",
+        category: "Calzado",
+        price: 70.00,
+        demo: false,
+        image: "imagenes/cal-002-frontal.webp",
+        images: [
+          "imagenes/cal-002-frontal.webp",
+          "imagenes/cal-002-frontallt.webp",
+          "imagenes/cal-002-lateral.webp",
+          "imagenes/cal-002-marca.webp",
+          "imagenes/cal-002-punta.webp",
+          "imagenes/cal-002-suela.webp"
+        ],
+        color: "Negro con blanco",
         variants: [
-          { label: "S · Gris", stock: 2 },
-          { label: "M · Gris", stock: 3 },
-          { label: "L · Gris", stock: 2 },
-          { label: "M · Negro", stock: 1 }
+          { label: "Talla 40 — Negro con blanco", stock: 1 }
         ]
       },
       {
         id: 3,
-        name: "Zapatillas Classic",
+        name: "Reebok Classic Nylon",
         category: "Calzado",
-        price: 39.90,
-        demo: true,
-        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80",
+        price: 70.00,
+        demo: false,
+        image: "imagenes/cal-003-frontal.webp",
+        images: [
+          "imagenes/cal-003-frontal.webp",
+          "imagenes/cal-003-frontalfr.webp",
+          "imagenes/cal-003-lateral.webp",
+          "imagenes/cal-003-suela.webp",
+          "imagenes/cal-003-suelpa.webp"
+        ],
+        color: "Plomo con blanco",
         variants: [
-          { label: "Talla 38", stock: 1 },
-          { label: "Talla 39", stock: 2 },
-          { label: "Talla 40", stock: 3 },
-          { label: "Talla 41", stock: 2 },
-          { label: "Talla 42", stock: 1 }
+          { label: "Talla 40 — Plomo con blanco", stock: 1 }
         ]
       },
       {
-        id: 4,
-        name: "Zapatos Urban",
-        category: "Calzado",
-        price: 44.90,
-        demo: true,
-        image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=700&q=80",
-        variants: [
-          { label: "Talla 39", stock: 2 },
-          { label: "Talla 40", stock: 2 },
-          { label: "Talla 41", stock: 3 },
-          { label: "Talla 42", stock: 2 }
-        ]
+      id: 4,
+      name: "Reebok Viva Speed",
+      category: "Calzado",
+      price: 80.00,
+      demo: false,
+      image: "imagenes/cal-004-frontal.jpeg",
+      images: [
+        "imagenes/cal-004-frontal.jpeg",
+        "imagenes/cal-004-lateral.jpeg",
+        "imagenes/cal-004-lateral2.jpeg"
+      ],
+      color: "Blanco con verde",
+      variants: [
+        { label: "Talla 40 — Blanco con verde", stock: 1 }
+      ]
       },
       {
-        id: 5,
-        name: "Gorra Minimal",
-        category: "Accesorios",
-        price: 12.90,
-        demo: true,
-        image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=700&q=80",
-        variants: [
-          { label: "Negro", stock: 4 },
-          { label: "Beige", stock: 3 },
-          { label: "Verde", stock: 2 }
-        ]
+      id: 5,
+      name: "Everfun Mochila Hidratación Camelbag",
+      category: "Accesorios",
+      price: 65.00,
+      demo: false,
+      image: "imagenes/acc-001-frontal.webp",
+      images: [
+        "imagenes/acc-001-frontal.webp",
+        "imagenes/acc-001-agua.webp",
+        "imagenes/acc-001-open.webp"
+      ],
+      color: "Negro con azul",
+      variants: [
+        { label: "Mochila Hidratante", stock: 1 }
+      ]
       },
       {
-        id: 6,
-        name: "Bolso Casual",
-        category: "Accesorios",
-        price: 24.90,
-        demo: true,
-        image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=700&q=80",
-        variants: []
+      id: 6,
+      name: "Adidas Chompa con Cierre",
+      category: "Ropa",
+      price: 65.00,
+      demo: false,
+      image: "imagenes/rop-001-frente.jpg",
+      images: [
+        "imagenes/rop-001-frente.jpg",
+      ],
+      color: "Negro con blanco",
+      variants: [
+        { label: "Talla S - Chompa Adidas", stock: 1 }
+      ]
+      },
+      {
+      id: 7,
+      name: "Adidas Chompa con Capucha",
+      category: "Ropa",
+      price: 55.00,
+      demo: false,
+      image: "imagenes/rop-002-frente.jpg",
+      images: [
+        "imagenes/rop-002-frente.jpg",
+        "imagenes/rop-002-atras.jpg"
+      ],
+      color: "Gris con negro",
+      variants: [
+        { label: "Talla S - Chompa Puma", stock: 1 }
+      ]
+      },
+      {
+      id: 8,
+      name: "Tommy Hilfiger Camisa",
+      category: "Ropa",
+      price: 45.00,
+      demo: false,
+      image: "imagenes/rop-003-frente.jpg",
+      images: [
+        "imagenes/rop-003-frente.jpg"
+      ],
+      color: "Celeste",
+      variants: [
+        { label: "Talla M - Camisa", stock: 1 }
+      ]
+      },
+      {
+      id: 9,
+      name: "Van Heusen Camisa",
+      category: "Ropa",
+      price: 45.00,
+      demo: false,
+      image: "imagenes/rop-004-frente.webp",
+      images: [
+        "imagenes/rop-004-frente.webp"
+      ],
+      color: "Azul Oscuro",
+      variants: [
+        { label: "Talla S - Camisa", stock: 1 }
+      ]
+      },
+      {
+      id: 10,
+      name: "Under Armour Camisa",
+      category: "Ropa",
+      price: 40.00,
+      demo: false,
+      image: "imagenes/rop-005-frente.jpg",
+      images: [
+        "imagenes/rop-005-frente.jpg",
+        "imagenes/rop-005-atras.jpg"
+      ],
+      color: "Azul Oscuro",
+      variants: [
+        { label: "Talla S - Camisa Azul Oscuro", stock: 1 }
+      ]
+      },
+      {
+      id: 11,
+      name: "Calvin Klein Camiseta",
+      category: "Ropa",
+      price: 30.00,
+      demo: false,
+      image: "imagenes/rop-006-frente.jpg",
+      images: [
+        "imagenes/rop-006-frente.jpg",
+        "imagenes/rop-006-atras.jpg"
+      ],
+      color: "Plomo",
+      variants: [
+        { label: "Talla M - Camiseta Ploma", stock: 1 }
+      ]
+      },
+      {
+      id: 12,
+      name: "Puma Camiseta",
+      category: "Ropa",
+      price: 30.00,
+      demo: false,
+      image: "imagenes/rop-007-frente.jpg",
+      images: [
+        "imagenes/rop-007-frente.jpg",
+        "imagenes/rop-007-atras.jpg"
+      ],
+      color: "Verde",
+      variants: [
+        { label: "Talla S - Camiseta Verde Olivo", stock: 1 }
+      ]
+      },
+      {
+      id: 13,
+      name: "Puma Camiseta",
+      category: "Ropa",
+      price: 30.00,
+      demo: false,
+      image: "imagenes/rop-008-frente.jpg",
+      images: [
+        "imagenes/rop-008-frente.jpg",
+        "imagenes/rop-008-atras.jpg"
+      ],
+      color: "Gris",
+      variants: [
+        { label: "Talla S - Camiseta Gris", stock: 1 }
+      ]
+      },
+      {
+      id: 14,
+      name: "U.S Polo Assn Camisa",
+      category: "Ropa",
+      price: 40.00,
+      demo: false,
+      image: "imagenes/rop-009-frente.jpg",
+      images: [
+        "imagenes/rop-009-frente.jpg",
+        "imagenes/rop-009-atras.jpg",
+        "imagenes/rop-009-logo.jpg"
+      ],
+      color: "Gris",
+      variants: [
+        { label: "Talla S - Camiseta Ploma", stock: 1 }
+      ]
+      },
+      {
+      id: 15,
+      name: "New Balance Chompa",
+      category: "Ropa",
+      price: 40.00,
+      demo: false,
+      image: "imagenes/rop-010-frente.jpg",
+      images: [
+        "imagenes/rop-010-frente.jpg",
+        "imagenes/rop-010-atras.jpg",
+      ],
+      color: "Gris",
+      variants: [
+        { label: "Talla M - Chompa Negra", stock: 1 }
+      ]
+      },
+      {
+      id: 16,
+      name: "New Balance Chompa",
+      category: "Ropa",
+      price: 40.00,
+      demo: false,
+      image: "imagenes/rop-011-frente.jpg",
+      images: [
+        "imagenes/rop-011-frente.jpg",
+        "imagenes/rop-011-atras.jpg",
+      ],
+      color: "Gris",
+      variants: [
+        { label: "Talla M - Chompa Beige", stock: 1 }
+      ]
+      },
+      {
+      id: 17,
+      name: "Cangurera Verde",
+      category: "Accesorios",
+      price: 35.00,
+      demo: false,
+      image: "imagenes/acc-002-frente.jpg",
+      images: [
+        "imagenes/acc-002-frente.jpg",
+        "imagenes/acc-002-detras.jpg",
+        "imagenes/acc-002-atras.jpg",
+        "imagenes/acc-002-abierto.jpg",
+      ],
+      color: "Gris",
+      variants: [
+        { label: "Cangurera Verde", stock: 1 }
+      ]
+      },
+      {
+      id: 18,
+      name: "Cangurera Verde Militar",
+      category: "Accesorios",
+      price: 35.00,
+      demo: false,
+      image: "imagenes/acc-003-frente.jpg",
+      images: [
+        "imagenes/acc-003-frente.jpg",
+        "imagenes/acc-003-atras.jpg",
+      ],
+      color: "Gris",
+      variants: [
+        { label: "Cangurera Verde Militar", stock: 1 }
+      ]
       }
     ];
 
     // Ecuador: escribe 593 seguido del número sin el primer cero.
     // Ejemplo de formato: "5939XXXXXXXX". No uses espacios ni el signo +.
     // Deja el marcador mientras todavía no quieras habilitar pedidos.
-    const WHATSAPP_NUMBER = "593XXXXXXXXX";
+    const WHATSAPP_NUMBER = "593984830693";
 
     let cart = [];
     let activeCategory = "Todos";
@@ -650,7 +1005,6 @@
 
       document.getElementById("products").innerHTML = filtered.length
         ? filtered.map(product => {
-          const firstVariant = product.variants[0];
           const soldOut = product.variants.length
             ? product.variants.every(variant => variant.stock <= 0)
             : (product.stock ?? 0) <= 0;
@@ -660,9 +1014,23 @@
                  ${product.variants.map(variant => `<option value="${variant.label}" ${variant.stock <= 0 ? 'disabled' : ''}>${variant.label} — ${variant.stock > 0 ? variant.stock + ' disponibles' : 'Agotado'}</option>`).join("")}
                </select>`
             : `<p class="stock-label">${(product.stock ?? 0) > 0 ? (product.stock ?? 0) + ' unidades disponibles' : 'Sin unidades registradas'}</p>`;
+          const galleryImages = product.images?.length ? product.images : [product.image];
+          const thumbnails = galleryImages.length > 1
+            ? `<div class="product-thumbnails" aria-label="Más fotos de ${product.name}">
+                ${galleryImages.map((image, index) => `
+                  <button class="product-thumbnail ${index === 0 ? 'active' : ''}" type="button"
+                    data-gallery-product="${product.id}" data-gallery-index="${index}"
+                    aria-label="Ver foto ${index + 1} de ${product.name}">
+                    <img src="${image}" alt="" loading="lazy">
+                  </button>`).join("")}
+              </div>`
+            : "";
           return `
             <article class="product">
-              <img class="product-image" src="${product.image}" alt="${product.name}" loading="lazy">
+              <div class="product-gallery" data-gallery="${product.id}">
+                <img class="product-image" src="${galleryImages[0]}" alt="${product.name}" loading="lazy">
+                ${thumbnails}
+              </div>
               <div class="product-info">
                 <div class="product-category">${product.category}</div>
                 <h3>${product.name}</h3>
@@ -755,7 +1123,70 @@
       panel.setAttribute("aria-hidden", "true");
     }
 
+    // Visor de zoom para las imágenes de producto
+    const zoomOverlay = document.getElementById("image-zoom");
+    const zoomPicture = document.getElementById("image-zoom-picture");
+    const zoomClose = document.getElementById("image-zoom-close");
+
+    function openImageZoom(imageSrc, imageAlt) {
+      zoomPicture.src = imageSrc;
+      zoomPicture.alt = imageAlt || "Imagen ampliada del producto";
+      zoomPicture.classList.remove("zoomed");
+      zoomOverlay.classList.add("open");
+      zoomOverlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("zoom-open");
+      zoomClose.focus();
+    }
+
+    function closeImageZoom() {
+      zoomOverlay.classList.remove("open");
+      zoomOverlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("zoom-open");
+      zoomPicture.classList.remove("zoomed");
+      zoomPicture.src = "";
+    }
+
+    zoomClose.addEventListener("click", closeImageZoom);
+
+    zoomOverlay.addEventListener("click", event => {
+      if (event.target === zoomOverlay) {
+        closeImageZoom();
+      }
+    });
+
+    zoomPicture.addEventListener("click", () => {
+      zoomPicture.classList.toggle("zoomed");
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && zoomOverlay.classList.contains("open")) {
+        closeImageZoom();
+      }
+    });
+
     document.getElementById("products").addEventListener("click", event => {
+      const thumbnail = event.target.closest("[data-gallery-product]");
+      if (thumbnail) {
+        const productId = Number(thumbnail.dataset.galleryProduct);
+        const imageIndex = Number(thumbnail.dataset.galleryIndex);
+        const product = products.find(item => item.id === productId);
+        const gallery = document.querySelector(`[data-gallery="${productId}"]`);
+        const images = product?.images?.length ? product.images : [product?.image];
+        if (product && gallery && images[imageIndex]) {
+          gallery.querySelector(".product-image").src = images[imageIndex];
+          gallery.querySelectorAll(".product-thumbnail").forEach((item, index) => {
+            item.classList.toggle("active", index === imageIndex);
+          });
+        }
+        return;
+      }
+
+      const mainImage = event.target.closest(".product-image");
+      if (mainImage) {
+        openImageZoom(mainImage.src, mainImage.alt);
+        return;
+      }
+
       const button = event.target.closest("[data-add]");
       if (button) addToCart(Number(button.dataset.add));
     });
@@ -811,20 +1242,56 @@
         return;
       }
 
-      const delivery = prompt(
-        "¿Cómo deseas recibir tu pedido?\n" +
-        "Escribe 1 para entrega a domicilio\n" +
-        "Escribe 2 para retiro en un punto acordado"
+      const country = prompt(
+        "Pato Shop realiza entregas únicamente dentro de Ecuador.\n" +
+        "Escribe tu país (Ecuador):"
       );
 
-      if (delivery !== "1" && delivery !== "2") {
-        alert("No se envió el pedido. Elige 1 o 2 para continuar.");
+      if (!country || country.trim().toLocaleLowerCase("es") !== "ecuador") {
+        alert("Por ahora, Pato Shop solo acepta pedidos con entrega dentro de Ecuador.");
         return;
       }
 
-      const deliveryText = delivery === "1"
-        ? "Entrega a domicilio (coordinar dirección y costo)"
-        : "Retiro en punto acordado";
+      const provinces = [
+        "Azuay", "Bolívar", "Cañar", "Carchi", "Chimborazo", "Cotopaxi",
+        "El Oro", "Esmeraldas", "Galápagos", "Guayas", "Imbabura", "Loja",
+        "Los Ríos", "Manabí", "Morona Santiago", "Napo", "Orellana", "Pastaza",
+        "Pichincha", "Santa Elena", "Santo Domingo de los Tsáchilas", "Sucumbíos",
+        "Tungurahua", "Zamora Chinchipe"
+      ];
+      const provinceInput = prompt(
+        "Escribe la provincia donde recibirás el pedido:\n\n" + provinces.join(", ")
+      );
+      if (!provinceInput) {
+        alert("No se envió el pedido. Debes indicar una provincia de Ecuador.");
+        return;
+      }
+
+      const province = provinces.find(
+        name => name.toLocaleLowerCase("es") === provinceInput.trim().toLocaleLowerCase("es")
+      );
+      if (!province) {
+        alert("No reconocimos esa provincia. Escribe el nombre de una provincia de Ecuador y vuelve a intentarlo.");
+        return;
+      }
+
+      let deliveryText;
+      if (province === "Pastaza") {
+        const delivery = prompt(
+          "Para Pastaza puedes elegir:\n" +
+          "1 = Entrega personal (coordinar lugar y horario)\n" +
+          "2 = Servicio de entrega / courier"
+        );
+        if (delivery !== "1" && delivery !== "2") {
+          alert("No se envió el pedido. Elige 1 para entrega personal o 2 para servicio de entrega.");
+          return;
+        }
+        deliveryText = delivery === "1"
+          ? "Entrega personal en Pastaza (coordinar lugar y horario)"
+          : "Servicio de entrega / courier a Pastaza (confirmar costo)";
+      } else {
+        deliveryText = "Servicio de entrega / courier a " + province + " (confirmar cobertura y costo)";
+      }
 
       const lines = cart.map(item =>
         `- ${item.name} (${item.variantLabel}) x${item.quantity}: ${money(item.price * item.quantity)}`
@@ -838,66 +1305,16 @@
         ...lines,
         "",
         `Total estimado de productos: ${money(total)}`,
+        "País: Ecuador",
+        `Provincia de entrega: ${province}`,
         `Modalidad de entrega: ${deliveryText}`,
         "Por favor, confirmen disponibilidad, costo de envío si corresponde y métodos de pago."
       ].join("\n");
 
       const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
-      window.open(url, "_blank", "noopener,noreferrer");
-    });
-
-
-    // Visor de imágenes de productos con zoom
-    const imageLightbox = document.getElementById("image-lightbox");
-    const lightboxImage = document.getElementById("lightbox-image");
-    let imageZoom = 1;
-
-    function updateImageZoom() {
-      lightboxImage.style.transform = `scale(${imageZoom})`;
-      lightboxImage.classList.toggle("zoomed", imageZoom > 1);
-      lightboxImage.style.maxWidth = imageZoom > 1 ? "none" : "100%";
-      lightboxImage.style.maxHeight = imageZoom > 1 ? "none" : "100%";
-    }
-
-    function openImageLightbox(src, alt) {
-      lightboxImage.src = src;
-      lightboxImage.alt = alt || "Imagen ampliada del producto";
-      imageZoom = 1;
-      updateImageZoom();
-      imageLightbox.classList.add("open");
-      document.body.style.overflow = "hidden";
-      document.getElementById("lightbox-close").focus();
-    }
-
-    function closeImageLightbox() {
-      imageLightbox.classList.remove("open");
-      document.body.style.overflow = "";
-      lightboxImage.src = "";
-    }
-
-    document.getElementById("products").addEventListener("click", event => {
-      const image = event.target.closest(".product-image");
-      if (image) openImageLightbox(image.currentSrc || image.src, image.alt);
-    });
-
-    document.getElementById("lightbox-close").addEventListener("click", closeImageLightbox);
-    imageLightbox.addEventListener("click", event => {
-      if (event.target === imageLightbox) closeImageLightbox();
-    });
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && imageLightbox.classList.contains("open")) closeImageLightbox();
-    });
-    document.getElementById("zoom-in").addEventListener("click", () => {
-      imageZoom = Math.min(4, imageZoom + 0.5); updateImageZoom();
-    });
-    document.getElementById("zoom-out").addEventListener("click", () => {
-      imageZoom = Math.max(1, imageZoom - 0.5); updateImageZoom();
-    });
-    document.getElementById("zoom-reset").addEventListener("click", () => {
-      imageZoom = 1; updateImageZoom();
-    });
-    lightboxImage.addEventListener("click", () => {
-      imageZoom = imageZoom > 1 ? 1 : 2; updateImageZoom();
+      // Navega en la misma pestaña para evitar que el navegador bloquee
+      // WhatsApp como ventana emergente después de los cuadros prompt().
+      window.location.href = url;
     });
 
     document.getElementById("year").textContent = new Date().getFullYear();
